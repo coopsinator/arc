@@ -1,0 +1,295 @@
+<template>
+  <v-app id="inspire" :dark="goDark">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      right
+      clipped
+    >
+      <v-list>
+        <v-list-item link to="/">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link to="/events">
+          <v-list-item-action>
+            <v-icon>mdi-calendar</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Events</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link to="/groups">
+          <v-list-item-action>
+            <v-icon>mdi-account-group</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>Groups</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link to="/articles">
+          <v-list-item-action>
+            <v-icon>mdi-text-box-outline</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>Articles</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link to="/resources">
+          <v-list-item-action>
+            <v-icon>mdi-vector-link</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>Resources</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        
+        <v-list-item link to="/about">
+          <v-list-item-action>
+            <v-icon>mdi-information-outline</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>About</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-invert-colors</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title @click="toggleTheme">Switch Theme</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar
+      app
+      dense
+      clipped-right
+      color="primary"
+      class="white--text"
+    >
+      <div class="title_large">
+      <v-btn icon>
+        <v-icon class="white--text">mdi-blank</v-icon>
+      </v-btn>
+      <v-btn icon>
+        <v-icon class="white--text">mdi-blank</v-icon>
+      </v-btn>
+      </div>
+      <v-spacer />
+      <div class="title_large">
+        
+        <v-toolbar-title>
+          <span @click="randomTitleSymbol">{{ title_symbol }}</span>
+          <span>&nbsp;Animal Activism PDX&nbsp;</span>
+          <span @click="randomTitleSymbol">{{ title_symbol }}</span>
+        </v-toolbar-title>
+      </div>
+      <div class="title_small">
+        <v-toolbar-title>
+          <span @click="randomTitleSymbol">{{ title_symbol }}</span>
+          <span>&nbsp;AAPDX&nbsp;</span>
+          <span @click="randomTitleSymbol">{{ title_symbol }}</span>
+        </v-toolbar-title>
+      </div>
+      <v-spacer />
+      <v-btn icon>
+        <v-icon class="white--text">mdi-magnify</v-icon>
+      </v-btn>
+      <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
+    </v-app-bar>
+
+    <v-content>
+      <!-- <h1 v-for="n in 20" :key="n">{{n}}</h1> -->
+      <router-view/>
+    </v-content>
+
+
+  </v-app>
+</template>
+<style>
+  #inspire {
+    font-family: 'Open Sans', sans-serif;
+
+  }
+  .v-toolbar__title {
+    font-size:2rem !important;
+    cursor:pointer;
+    user-select:none;
+  }
+  .title_small {
+    display:none;
+  }
+  @media (max-width: 800px) {
+    .title_small {
+      display:block;
+    }
+    .title_large {
+      display:none;
+    }
+  }
+</style>
+<script>
+  export default {
+    name: 'Home',
+    props: {
+      source: String,
+    },
+    data: () => ({
+      drawer: null,
+      goDark: false,
+      title_symbol: '',
+      symbols: {
+        // 'leaf_left': '☙',
+        // 'flower': '⚘',
+        'seedling': '🌱',
+        'evergreen_tree': '🌲',
+        'deciduous_tree': '🌳',
+        'palm_tree': '🌴',
+        'cactus': '🌵',
+        // 'tulip': '🌷',
+        // 'cherry_blossom': '🌸',
+        'rose': '🌹',
+        // 'hibiscus': '🌺',
+        'sunflower': '🌻',
+        'blossom': '🌼',
+        'herb': '🌿',
+        'four_leaf_clover': '🍀',
+        'maple_leaf': '🍁',
+        'fallen_leaf': '🍂',
+        // //'leaf_fluttering_in_wind': '🍃',
+        // 'tomato': '🍅',
+        // 'aubergine': '🍆',
+        // 'grapes': '🍇',
+        // 'melon': '🍈',
+        // 'watermelon': '🍉',
+        // 'tangerine': '🍊',
+        // 'lemon': '🍋',
+        // 'banana': '🍌',
+        // 'pineapple': '🍍',
+        // 'red_apple': '🍎',
+        // 'green_apple': '🍏',
+        // 'pear': '🍐',
+        // 'peach': '🍑',
+        // 'cherries': '🍒',
+        // 'strawberry': '🍓',
+        // //'boquet': '💐',
+        // 'white_flower': '💮',
+
+        // 'white chess knight': '♘',
+        // 'black chess knight': '♞',
+        'rat': '🐀',
+        'mouse': '🐁',
+        'ox': '🐂',
+        'water buffalo': '🐃',
+        'cow': '🐄',
+        'tiger': '🐅',
+        'leopard': '🐆',
+        'rabbit': '🐇',
+        'cat': '🐈',
+        //'dragon': '🐉',
+        'crocodile': '🐊',
+        'whale': '🐋',
+        'snail': '🐌',
+        'snake': '🐍',
+        'horse': '🐎',
+        'ram': '🐏',
+        'goat': '🐐',
+        'sheep': '🐑',
+        'monkey': '🐒',
+        'rooster': '🐓',
+        'chicken': '🐔',
+        'dog': '🐕',
+        'pig': '🐖',
+        'boar': '🐗',
+        'elephant': '🐘',
+        'octopus': '🐙',
+        'spiral shell': '🐚',
+        'bug': '🐛',
+        'ant': '🐜',
+        'honeybee': '🐝',
+        'lady beetle': '🐞',
+        'fish': '🐟',
+        'tropical fish': '🐠',
+        'blowfish': '🐡',
+        'turtle': '🐢',
+        'hatching chick': '🐣',
+        'baby chick': '🐤',
+        'front-facing baby chick': '🐥',
+        'bird': '🐦',
+        'penguin': '🐧',
+        'koala': '🐨',
+        'poodle': '🐩',
+        'dromedary camel': '🐪',
+        'bactrian camel': '🐫',
+        'dolphin': '🐬',
+        'mouse face': '🐭',
+        'cow face': '🐮',
+        'tiger face': '🐯',
+        'rabbit face': '🐰',
+        'cat face': '🐱',
+        //'dragon face': '🐲',
+        'spouting whale': '🐳',
+        'horse face': '🐴',
+        'monkey face': '🐵',
+        'dog face': '🐶',
+        'pig face': '🐷',
+        'frog face': '🐸',
+        'hamster face': '🐹',
+        'wolf face': '🐺',
+        'bear face': '🐻',
+        'panda face': '🐼',
+        'pig nose': '🐽',
+        'paw prints': '🐾',
+        //'grinning cat face with smiling eyes': '😸',
+        //'cat face with tears of joy': '😹',
+        //'smiling cat face with open mouth': '😺',
+        //'smiling cat face with heart-shaped eyes': '😻',
+        //'cat face with wry smile': '😼',
+        //'kissing cat face with closed eyes': '😽',
+        //'pouting cat face': '😾',
+        //'crying cat face': '😿',
+        //'weary cat face': '🙀',
+        'see-no-evil monkey': '🙈',
+        'speak-no-evil monkey': '🙊',
+        'hear-no-evil monkey': '🙉',
+        'globe-showing-americas': '🌎',
+        'globe-showing-europe-africa': '🌍',
+        'globe-showing-asia-australia': '🌏'
+      }
+    }),
+    methods: {
+      toggleTheme: function() {
+        if (this.goDark == true) {
+          this.goDark = false
+          this.$vuetify.theme.dark = false
+        } else {
+          this.goDark = true
+          this.$vuetify.theme.dark = true
+        }
+      },
+      randomTitleSymbol: function() {
+        let keys = Object.keys(this.symbols)
+        this.title_symbol = this.symbols[keys[Math.floor(keys.length * Math.random())]];
+      }
+    },
+    created: function() {
+      this.randomTitleSymbol()
+    }
+  }
+</script>
