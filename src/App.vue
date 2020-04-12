@@ -65,12 +65,12 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link>
+        <v-list-item link @click="toggleTheme">
           <v-list-item-action>
             <v-icon>mdi-invert-colors</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title @click="toggleTheme">Switch Theme</v-list-item-title>
+            <v-list-item-title >Switch Theme</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -80,7 +80,7 @@
       app
       dense
       clipped-right
-      color="primary"
+      color="navbar"
       class="white--text"
     >
       <div class="title_large">
@@ -115,7 +115,6 @@
     </v-app-bar>
 
     <v-content>
-      <!-- <h1 v-for="n in 20" :key="n">{{n}}</h1> -->
       <router-view/>
     </v-content>
 
@@ -142,6 +141,10 @@
     .title_large {
       display:none;
     }
+  }
+  a {
+    text-decoration: none;
+    /* color: lightgoldenrodyellow !important; */
   }
 </style>
 <script>

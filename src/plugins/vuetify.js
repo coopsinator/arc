@@ -11,13 +11,24 @@ export default new Vuetify({
         light: {
           primary: colors.green.base, // #E53935
           secondary: colors.red.lighten4, // #FFCDD2
-          accent: colors.indigo.base, // #3F51B5
+          accent: colors.indigo.base, // #3F51B5,
+          navbar: colors.green.base
         },
         dark: {
-          primary: colors.blueGrey.darken4, // #E53935
+          // primary: 'lightgoldenrodyellow', // #E53935
           secondary: colors.red.lighten4, // #FFCDD2
           accent: colors.indigo.base, // #3F51B5
+          navbar: colors.blueGrey.darken4
         }
+        // {
+        //   primary: '#1976D2',
+        //   secondary: '#424242',
+        //   accent: '#82B1FF',
+        //   error: '#FF5252',
+        //   info: '#2196F3',
+        //   success: '#4CAF50',
+        //   warning: '#FFC107',
+        // }
       },
       dark: false
     }

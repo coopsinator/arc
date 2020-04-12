@@ -45,5 +45,8 @@
         }
       ]
     }),
+    created: function() {
+      
+    }
   }
 </script>

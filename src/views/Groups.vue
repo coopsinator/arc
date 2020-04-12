@@ -1,49 +1,115 @@
 <template>
-  <v-expansion-panels>
-    <v-expansion-panel
-      v-for="(item,i) in 5"
-      :key="i"
-    >
-      <v-expansion-panel-header>Item</v-expansion-panel-header>
-      <v-expansion-panel-content>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+  <div class="groups">
+    <v-container class="header">
+      <v-row justify="space-between" align="center">
+        <v-col>
+          <h1>Groups</h1>
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col>
+          <v-select
+            :items="group_types"
+            v-model="selected_group_type"
+            class="select_group_type"
+          ></v-select>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-expansion-panels>
+      <v-expansion-panel
+        v-for="(group,i) in filteredGroups"
+        :key="i"
+      >
+        <v-expansion-panel-header><h2>{{group.name}}</h2></v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <div>{{group.description}}</div>
+          <div class="group_links">
+            <span><a v-for="(url,j) in group.urls" :key="j" :href="url" class="group_link" target="_blank"><v-icon>{{findIconForUrl(url)}}</v-icon></a></span>
+            <span>{{group.type}}</span>
+          </div>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </div>
 </template>
+<style>
+  .header {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+  }
+  .select_group_type {
+    min-width:160px;
+    transform:translateY(4px);
+  }
+  
+  .groups {
+    max-width:800px;
+    margin: 0 auto;
+  }
+  .groups h1 {
+    margin: 20px 0;
+  }
 
+  @media (max-width:800px) {
+    .groups h1 {
+      margin: 20px;
+    }
+  }
+  .group_links {
+    margin-top:10px;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+  }
+  .group_link {
+    margin-right:10px;
+    text-decoration: none;
+  }
+</style>
 <script>
+  import json from '../data/groups.json'
   export default {
     name: 'Groups',
     data: () => ({
-      groups: [
-        {
-            name: 'Compassionate PDX (Fur Free PDX)',
-            description: '"Compassionate PDX is a grass-roots group of volunteers dedicated to creating political change in favor of non-human animals. Our local chapter is affilliated with Compassionate Cities, along with several other cities including Berkeley, San Diego, and Toronto."',
-            type: 'organization',
-            phone: '',
-            address: '',
-            email: 'compassionateportland@gmail.com',
-            urls: [
-                'http://furfreepdx.org/',
-                'https://www.facebook.com/compassionatepdx/',
-                'https://www.instagram.com/compassionatepdx/'
-            ]
-        },{
-            name: 'Try Vegan PDX',
-            description: '"Try Vegan PDX offers education and resources, events and support, and activism opportunities in Portland, Oregon and beyond. We champion for the animals, those interested in a compassionate lifestyle, and the larger vegan community."',
-            type: 'organization',
-            phone: '(808) 854-7414',
-            address: '2222 NE Pacific St #J Portland, OR 97232',
-            email: 'info@tryveganpdx.com',
-            urls: [
-                'https://tryveganpdx.org/'
-            ]
-        },{
-            name: 'Voices for the Animals',
-            description: '"Voices for the Animals is a monthly half hour  program that tackles the issues around animal rights, with interviews of front-line activists who are working to make a difference in the lives of animals around the world. With hosts Noah Bristol, Julianne Schwartz, and Michele Coppola."'
-        }
-      ]
+      group_types: ['all', 'organization', 'community', 'sanctuary'], // 'business', 'restaurant'],
+      selected_group_type: 'all',
+      groups: json.groups
     }),
+    methods: {
+      findIconForUrl: function(url) {
+        // if (url) {
+        //   return 'mdi-account-group'
+        // }
+        if (url.includes('facebook')) {
+          return 'mdi-facebook'
+        } else if (url.includes('instagram')) {
+          return 'mdi-instagram'
+        } else if (url.includes('twitter')) {
+          return 'mdi-twitter'
+        } else if (url.includes('youtube')) {
+          return 'mdi-youtube'
+        } else if (url.includes('meetup')) {
+          return 'mdi-alpha-m'
+        } else {
+          return 'mdi-web'
+        }
+      }
+    },
+    computed: {
+      filteredGroups: function() {
+        let groups = this.groups.slice()
+        if (this.selected_group_type != 'all') {
+          groups = groups.filter(e => {
+            return e.type == this.selected_group_type
+          })
+        }
+        groups.sort((a, b) => {
+          return a.name.localeCompare(b.name)
+        })
+        return groups
+      }
+    },
+    created: function() {}
   }
 </script>
