@@ -54,6 +54,16 @@
             <v-list-item-title>Resources</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item link to="/calculator">
+          <v-list-item-action>
+            <v-icon>mdi-calculator</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>Calculator</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         
         <v-list-item link to="/about">
           <v-list-item-action>

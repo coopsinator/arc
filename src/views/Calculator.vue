@@ -1,39 +1,57 @@
 <template>
   <!-- https://thevegancalculator.com/#calculator -->
   <v-container class="center">
-    <h1>How long have you been vegan?</h1>
-    <hr/>
-    <v-row>
-      <v-col cols="12" md="3">
-        <v-text-field v-model="input_years" label="Years" required></v-text-field>
-      </v-col>
+    <v-tabs
+      centered>
+      <v-tab href="#saved">Saved</v-tab>
+      <v-tab href="#lost">Lost</v-tab>
+      <v-tab-item value="saved">
+        <h1>How long have you been vegan?</h1>
+        <a><h3><v-icon>mdi-arrow-right</v-icon>When did you go vegan?</h3></a>
+        <hr/>
+        <v-row>
+          <v-col cols="12" md="3">
+            <v-text-field v-model="input_years" label="Years" required></v-text-field>
+          </v-col>
 
-      <v-col cols="12" md="3">
-        <v-text-field v-model="input_months" label="Months" required></v-text-field>
-      </v-col>
+          <v-col cols="12" md="3">
+            <v-text-field v-model="input_months" label="Months" required></v-text-field>
+          </v-col>
 
-      <v-col cols="12" md="3">
-        <v-text-field v-model="input_days" label="Days" required></v-text-field>
-      </v-col>
-      <v-col cols="12" md="3">
-        <v-radio-group v-model="input_units">
-            <v-radio
-                label="Metric"
-                value="metric"
-            ></v-radio>
-            <v-radio
-                label="Imperial"
-                value="imperial"
-            ></v-radio>
-        </v-radio-group>
-      </v-col>
-    </v-row>
-    <h1>You've saved...</h1>
-    <hr/>
-    <div v-for="(rate, i) in rates" :key="i" class="rate">
-      <v-icon size="60">{{rate.icon}}</v-icon>
-      <span>{{calculateRate(rate)}} {{rate[input_units].units}}</span>
-    </div>
+          <v-col cols="12" md="3">
+            <v-text-field v-model="input_days" label="Days" required></v-text-field>
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-radio-group v-model="input_units">
+                <v-radio
+                    label="Metric"
+                    value="metric"
+                ></v-radio>
+                <v-radio
+                    label="Imperial"
+                    value="imperial"
+                ></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <h1>You've saved...</h1>
+        <hr/>
+        <div v-for="(rate, i) in rates" :key="i" class="rate">
+          <v-icon size="60">{{rate.icon}}</v-icon>
+          <span>{{calculateRate(rate)}} {{rate[input_units].units}}</span>
+        </div>
+      </v-tab-item>
+      <v-tab-item value="lost">
+        <div>
+          <ul>
+            <ol>{{Math.floor(milliseconds_since_open/1000)}} Seconds</ol>
+            <ol v-for="(rate, i) in death_rates" :key="i">{{rate.name}} {{Math.round(rate.total_since_open)}}</ol>
+          </ul>
+        </div>
+      </v-tab-item>
+    </v-tabs>
+
+
   </v-container>
 
 </template>
@@ -119,18 +137,117 @@ export default {
           units: "animal lives"
         }
       }
+    ],
+    death_rates: [
+      {
+        name: "marine animals",
+        rate_million_year: 90000
+      },
+      {
+        name: "chickens",
+        rate_million_year: 45895
+      },
+      {
+        name: "ducks",
+        rate_million_year: 2262
+      },
+      {
+        name: "pigs",
+        rate_million_year: 1244
+      },
+      {
+        name: "rabbits",
+        rate_million_year: 857
+      },
+      {
+        name: "turkeys",
+        rate_million_year: 691
+      },
+      {
+        name: "geese",
+        rate_million_year: 533
+      },
+      {
+        name: "sheep",
+        rate_million_year: 515
+      },
+      {
+        name: "goats",
+        rate_million_year: 345
+      },
+      {
+        name: "cows and calves",
+        rate_million_year: 292
+      },
+      {
+        name: "rodents",
+        rate_million_year: 65
+      },
+      {
+        name: "pigeons and other birds",
+        rate_million_year: 63
+      },
+      {
+        name: "buffaloes",
+        rate_million_year: 23
+      },
+      {
+        name: "dogs",
+        rate_million_year: 16
+      },
+      {
+        name: "cats",
+        rate_million_year: 4
+      },
+      {
+        name: "horses",
+        rate_million_year: 4
+      },
+      {
+        name: "donkeys and mules",
+        rate_million_year: 3
+      },
+      {
+        name: "camels and other camelids",
+        rate_million_year: 2
+      }
+    ],
+    open_date: null,
+    milliseconds_since_open: 0,
+    sources: [
+      {
+        "name": ""
+      }
     ]
   }),
   methods: {
-      calculateRate: function(rate) {
-          let total_days = parseInt(this.input_years)*365 + parseInt(this.input_months)*30 + parseInt(this.input_days)
-          let v = total_days*rate[this.input_units].rate
-          v = v.toPrecision(3) // reduce to 2 significant figures
-          v = parseFloat(v) // remove scientific notation
-          v = v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") // add commas
-          return v
-      }
+    calculateRate: function(rate) {
+      let total_days = parseInt(this.input_years)*365 + parseInt(this.input_months)*30 + parseInt(this.input_days)
+      let v = total_days*rate[this.input_units].rate
+      v = v.toPrecision(3) // reduce to 2 significant figures
+      v = parseFloat(v) // remove scientific notation
+      v = v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") // add commas
+      return v
+    },
+    updateTotal: function() {
+      window.requestAnimationFrame(this.updateTotal)
+      this.milliseconds_since_open = new Date().getTime() - this.open_date.getTime()
+      
+      this.death_rates.forEach(rate => {
+        rate.total_since_open = rate.rate_millisecond*this.milliseconds_since_open
+      })
+      this.$forceUpdate()
+    }
   },
-  created: function() {}
+  created: function() {
+    this.death_rates.forEach(rate => {
+      rate.rate_million_year *= 1000000
+      rate.rate_millisecond = rate.rate_million_year / 365 / 24 / 60 / 60 / 1000
+      rate.total_since_open = 0
+    })
+    this.open_date = new Date()
+    window.requestAnimationFrame(this.updateTotal)
+    
+  }
 };
 </script>
