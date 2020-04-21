@@ -5,11 +5,11 @@
     </v-row>
     <v-row>
       <v-col
+        class="filter_column"
       >
         <v-btn-toggle
           v-model="selected_resource_type"
           tile
-          
           >
           <v-btn
             v-for="(resource_type, index) in resource_types"
@@ -29,17 +29,18 @@
           <v-expansion-panel-header>
             <div>
               <h2>{{resource.name}}</h2>
-              <h5 class="resource_author">
-                  <span>{{resource.type | capitalize}}</span>
-                  <span v-if="resource.author"> / {{resource.author}}</span>
-              </h5>
+              <h4 class="resource_author">
+                <span>{{resource.type | capitalize}}</span>
+                <span v-if="resource.author"> / {{resource.author}}</span>
+              </h4>
             </div>
             <div class="link_container">
             <a :href="resource.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <span v-html="resource.description"></span>
+            <div v-html="resource.description"></div>
+            <span><a v-for="(url,j) in resource.urls" :key="j" :href="url" class="group_link" target="_blank"><v-icon>{{findIconForUrl(url)}}</v-icon></a></span>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -47,13 +48,12 @@
   </v-container>
 </template>
 <style>
+.resources h1 {
+  margin: 10px 0;
+}
 .resources {
   max-width:800px;
   margin: 0 auto;
-}
-.resources h1 {
-  margin: 20px 0;
-  margin-left:20px;
 }
 .resource_author {
   margin-top:4px;
@@ -65,6 +65,9 @@
 }
 .v-btn-toggle .v-btn {
   margin:2px;
+}
+.filter_column {
+  padding: 12px 0 !important;
 }
 .v-btn-toggle .v-btn.theme--light:not(.v-btn--active) {
   background-color: transparent !important;
@@ -95,12 +98,29 @@
 <script>
 import json from "../data/resources.json";
 export default {
-  name: "Events",
+  name: "Resources",
   data: () => ({
     resource_types: ['app', 'article', 'book', 'documentary', 'film', 'video', 'website'], // 'business', 'restaurant'],
     selected_resource_type: null,
     resources: json.resources
   }),
+  methods: {
+    findIconForUrl: function(url) {
+      if (url.includes('facebook')) {
+        return 'mdi-facebook'
+      } else if (url.includes('instagram')) {
+        return 'mdi-instagram'
+      } else if (url.includes('twitter')) {
+        return 'mdi-twitter'
+      } else if (url.includes('youtube')) {
+        return 'mdi-youtube'
+      } else if (url.includes('meetup')) {
+        return 'mdi-alpha-m'
+      } else {
+        return 'mdi-web'
+      }
+    }
+  },
   computed: {
       filteredResources: function() {
         let resources = this.resources.slice()

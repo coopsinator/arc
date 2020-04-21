@@ -1,115 +1,128 @@
 <template>
-  <div class="groups">
-    <v-container class="header">
-      <v-row justify="space-between" align="center">
-        <v-col>
-          <h1>Groups</h1>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col>
-          <v-select
-            :items="group_types"
-            v-model="selected_group_type"
-            class="select_group_type"
-          ></v-select>
-        </v-col>
-      </v-row>
-    </v-container>
-    <v-expansion-panels>
-      <v-expansion-panel
-        v-for="(group,i) in filteredGroups"
-        :key="i"
-      >
-        <v-expansion-panel-header><h2>{{group.name}}</h2></v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <div>{{group.description}}</div>
-          <div class="group_links">
-            <span><a v-for="(url,j) in group.urls" :key="j" :href="url" class="group_link" target="_blank"><v-icon>{{findIconForUrl(url)}}</v-icon></a></span>
-            <span>{{group.type}}</span>
-          </div>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-  </div>
+  <v-container fluid class="groups">
+    <v-row>
+      <h1>{{ group_type.plural | capitalize }}</h1>
+    </v-row>
+    <v-row>
+      <v-expansion-panels>
+        <v-expansion-panel v-for="(group,i) in filteredGroups" :key="i">
+          <v-expansion-panel-header>
+            <div>
+              <h2>{{group.name}}</h2>
+            </div>
+            <div class="link_container">
+            <a :href="group.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
+            </div>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <div>{{group.description}}</div>
+            <div class="group_links">
+              <span><a v-for="(url,j) in group.urls" :key="j" :href="url" class="group_link" target="_blank"><v-icon>{{findIconForUrl(url)}}</v-icon></a></span>
+            </div>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-row>
+  </v-container>
 </template>
 <style>
-  .header {
-    display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-  }
-  .select_group_type {
-    min-width:160px;
-    transform:translateY(4px);
-  }
-  
-  .groups {
-    max-width:800px;
-    margin: 0 auto;
-  }
-  .groups h1 {
-    margin: 20px 0;
-  }
+.groups h1 {
+  margin: 10px 0;
+}
+.groups {
+  max-width:800px;
+  margin: 0 auto;
+}
+.group_author {
+  margin-top:4px;
+}
+.v-btn-toggle {
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color:transparent !important;
+}
+.v-btn-toggle .v-btn {
+  margin:2px;
+}
+.filter_column {
+  padding: 12px 0 !important;
+}
+.v-btn-toggle .v-btn.theme--light:not(.v-btn--active) {
+  background-color: transparent !important;
+  border:1px solid grey;
+}
+.v-btn-toggle .v-btn.theme--dark:not(.v-btn--active) {
+  background-color: transparent !important;
+  border:1px solid grey;
+}
+.v-btn-toggle .v-btn.theme--light:not(.v-btn--active) .v-btn__content {
+  color:black !important;
+}
 
-  @media (max-width:800px) {
-    .groups h1 {
-      margin: 20px;
-    }
-  }
-  .group_links {
-    margin-top:10px;
-    display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-  }
-  .group_link {
-    margin-right:10px;
-    text-decoration: none;
-  }
+.v-btn-toggle .theme--light .v-btn__content {
+  color: white;
+}
+.v-btn-toggle .v-btn--active.theme--light .v-btn__content {
+  color:white;
+}
+.link_container {
+  display:flex;
+  flex-direction: row-reverse;
+  align-items:center;
+  padding-right:10px;
+}
+
 </style>
 <script>
-  import json from '../data/groups.json'
-  export default {
-    name: 'Groups',
-    data: () => ({
-      group_types: ['all', 'organization', 'community', 'sanctuary'], // 'business', 'restaurant'],
-      selected_group_type: 'all',
-      groups: json.groups
-    }),
-    methods: {
-      findIconForUrl: function(url) {
-        // if (url) {
-        //   return 'mdi-account-group'
-        // }
-        if (url.includes('facebook')) {
-          return 'mdi-facebook'
-        } else if (url.includes('instagram')) {
-          return 'mdi-instagram'
-        } else if (url.includes('twitter')) {
-          return 'mdi-twitter'
-        } else if (url.includes('youtube')) {
-          return 'mdi-youtube'
-        } else if (url.includes('meetup')) {
-          return 'mdi-alpha-m'
-        } else {
-          return 'mdi-web'
-        }
+import json from "../data/groups.json";
+export default {
+  name: "Groups",
+  props: ['group_type'],
+  data: () => ({
+    group_types: ['organizations', 'communities', 'sanctuaries', 'restaurants', 'businesses'],
+    // group_type: this.group_type,
+    groups: json.groups
+  }),
+  methods: {
+    findIconForUrl: function(url) {
+      if (url.includes('facebook')) {
+        return 'mdi-facebook'
+      } else if (url.includes('instagram')) {
+        return 'mdi-instagram'
+      } else if (url.includes('twitter')) {
+        return 'mdi-twitter'
+      } else if (url.includes('youtube')) {
+        return 'mdi-youtube'
+      } else if (url.includes('meetup')) {
+        return 'mdi-alpha-m'
+      } else {
+        return 'mdi-web'
       }
-    },
-    computed: {
-      filteredGroups: function() {
-        let groups = this.groups.slice()
-        if (this.selected_group_type != 'all') {
-          groups = groups.filter(e => {
-            return e.type == this.selected_group_type
-          })
-        }
-        groups.sort((a, b) => {
-          return a.name.localeCompare(b.name)
+    }
+  },
+  computed: {
+    filteredGroups: function() {
+      let groups = this.groups.slice()
+      if (this.group_type != null) {
+        groups = groups.filter(e => {
+          return e.type == this.group_type.singular
         })
-        return groups
       }
-    },
-    created: function() {}
+      groups.sort((a, b) => {
+        return a.name.localeCompare(b.name)
+      })
+      return groups
+    }
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  },
+  created: function() {
+    // console.log(this.group_type)
   }
+};
 </script>

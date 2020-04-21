@@ -25,13 +25,34 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link to="/groups">
+        <v-list-item link to="/organizations">
+          <v-list-item-action>
+            <v-icon>mdi-rhombus-split</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>Organizations</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item link to="/communities">
           <v-list-item-action>
             <v-icon>mdi-account-group</v-icon>
           </v-list-item-action>
 
           <v-list-item-content>
-            <v-list-item-title>Groups</v-list-item-title>
+            <v-list-item-title>Communities</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+
+        <v-list-item link to="/sanctuaries">
+          <v-list-item-action>
+            <v-icon>mdi-barn</v-icon>
+          </v-list-item-action>
+
+          <v-list-item-content>
+            <v-list-item-title>Sanctuaries</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 

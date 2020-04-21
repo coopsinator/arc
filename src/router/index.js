@@ -18,6 +18,42 @@ const routes = [
     component: Events
   },
   {
+    path: '/organizations',
+    name: 'Organizations',
+    // alias: '/orgs',
+    component: () => import('../views/Groups.vue'),
+    props: {
+      'group_type': {
+        plural: 'organizations',
+        singular: 'organization'
+      }
+    }
+  },
+  {
+    path: '/communities',
+    name: 'Communities',
+    // alias: '/orgs',
+    component: () => import('../views/Groups.vue'),
+    props: {
+      'group_type': {
+        plural: 'communities',
+        singular: 'community'
+      }
+    }
+  },
+  {
+    path: '/sanctuaries',
+    name: 'Sanctuaries',
+    // alias: '/orgs',
+    component: () => import('../views/Groups.vue'),
+    props: {
+      'group_type':  {
+        plural: 'sanctuaries',
+        singular: 'sanctuary'
+      }
+    }
+  },
+  {
     path: '/groups',
     name: 'Groups',
     component: Groups
@@ -25,10 +61,7 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import('../views/About.vue')
   },
   {
     path: '/resources',
