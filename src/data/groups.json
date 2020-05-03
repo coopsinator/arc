@@ -389,6 +389,17 @@
               "https://www.instagram.com/theravencorps/",
               "https://www.youtube.com/channel/UCqHhKcO8SFRxi88bw_IRt8g"
           ]
+      },
+      {
+          "name":"Portland Animal Activism",
+          "description":"We are looking for people to unite with us for animal activism, outreach, volunteering and to help create awareness/get the message out on how/why to be a vegan and help animals.",
+          "address":"online",
+          "phone":"",
+          "email":"",
+          "type":"community",
+          "urls":[
+              "https://www.facebook.com/groups/pdxaa/"
+          ]
       }
     ]
   }

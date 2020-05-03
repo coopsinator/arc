@@ -56,7 +56,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item link to="/articles">
+        <!-- <v-list-item link to="/articles">
           <v-list-item-action>
             <v-icon>mdi-text-box-outline</v-icon>
           </v-list-item-action>
@@ -64,7 +64,7 @@
           <v-list-item-content>
             <v-list-item-title>Articles</v-list-item-title>
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
 
         <v-list-item link to="/resources">
           <v-list-item-action>
@@ -139,9 +139,9 @@
         </v-toolbar-title>
       </div>
       <v-spacer />
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon class="white--text">mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
     </v-app-bar>
 

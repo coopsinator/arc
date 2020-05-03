@@ -8,40 +8,21 @@
       <v-tab-item value="saved">
         <h1 class="calculator_title">How long have you been vegan?</h1>
         <hr/>
-        <v-row>
+        <v-row
+          align="center"
+          >
+          <v-spacer></v-spacer>
+
           <v-col cols="12" md="2">
-            <v-text-field v-model="input_years" @input="savedUpdateDate" label="Years" required></v-text-field>
+            <v-text-field v-model="input_years" label="Years" required></v-text-field>
           </v-col>
 
           <v-col cols="12" md="2">
-            <v-text-field v-model="input_months" @input="savedUpdateDate" label="Months" required></v-text-field>
+            <v-text-field v-model="input_months" label="Months" required></v-text-field>
           </v-col>
 
           <v-col cols="12" md="2">
-            <v-text-field v-model="input_days" @input="savedUpdateDate" label="Days" required></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-dialog
-              ref="dialog"
-              v-model="modal"
-              :return-value.sync="input_date"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="input_date"
-                  label="Date"
-                  readonly
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker v-model="input_date" scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-                <v-btn text color="primary" @click="$refs.dialog.save(input_date); savedUpdateYMD()">OK</v-btn>
-              </v-date-picker>
-            </v-dialog>
+            <v-text-field v-model="input_days" label="Days" required></v-text-field>
           </v-col>
 
           <v-col cols="12" md="3">
@@ -56,6 +37,8 @@
                 ></v-radio>
             </v-radio-group>
           </v-col>
+
+          <v-spacer></v-spacer>
         </v-row>
         <h1>You've saved...</h1>
         <hr/>
@@ -65,12 +48,11 @@
         </div>
       </v-tab-item>
       <v-tab-item value="lost">
-        <div>
-          <ul>
-            <ol>{{Math.floor(milliseconds_since_open/1000)}} Seconds</ol>
-            <ol v-for="(rate, i) in death_rates" :key="i">{{rate.name}} {{Math.round(rate.total_since_open)}}</ol>
-          </ul>
-        </div>
+        <div class="lost_title">Listed below are the number of animals killed by humans since you opened this page, {{Math.floor(milliseconds_since_open/1000)}} seconds ago</div>
+        <v-row v-for="(rate, i) in death_rates" :key="i">
+          <v-col class="text-right">{{rate.name}}</v-col>
+          <v-col>{{formatNumber(rate.total_since_open)}}</v-col>
+        </v-row>
       </v-tab-item>
     </v-tabs>
 
@@ -99,6 +81,16 @@
     }
     .calculator_title {
       padding:20px 0;
+    }
+    .lost_title {
+      font-size:1.4rem;
+      margin:20px;
+    }
+    .theme--dark.v-tabs > .v-tabs-bar {
+      background-color:transparent;
+    }
+    .theme--dark.v-tabs-items {
+      background-color:transparent;
     }
 </style>
 <script>
@@ -273,21 +265,8 @@ export default {
       })
       this.$forceUpdate()
     },
-    savedUpdateDate: function() {
-      let total_days = parseInt(this.input_years)*365 + parseInt(this.input_months)*30 + parseInt(this.input_days)
-      let date = new Date()
-      date.setDate(date.getDate() - days)
-      this.input_date = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate()
-    },
-    savedUpdateYMD: function() {
-      console.log('!!')
-      let millis = new Date() - new Date(this.input_date)
-      let days = millis/1000/60/60/24
-      this.input_years = Math.floor(days/365)
-      days -= this.input_years*365
-      this.input_months = Math.floor(days/30)
-      days -= this.input_months*30
-      this.input_days = Math.floor(days)
+    formatNumber: function(num) {
+      return Math.floor(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
   },
   created: function() {
@@ -298,7 +277,6 @@ export default {
     })
     this.open_date = new Date()
     window.requestAnimationFrame(this.updateTotal)
-    this.savedUpdateDate()
     
   }
 };

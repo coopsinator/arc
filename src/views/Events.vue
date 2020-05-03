@@ -9,9 +9,8 @@
           <v-expansion-panel-header>
             <div>
               <h2>{{event.title}}</h2>
-              <h4 class="event_author">
-                <span>{{event.hosts}}</span>
-              </h4>
+              <h4 class="event_subtitle">{{event.hosts}}</h4>
+              <h4 class="event_subtitle">{{getEventDateTime(event)}}</h4>
             </div>
             <div class="link_container">
             <a :href="event.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
@@ -34,7 +33,7 @@
   max-width:800px;
   margin: 0 auto;
 }
-.event_author {
+.event_subtitle {
   margin-top:4px;
 }
 .v-btn-toggle {
@@ -98,19 +97,39 @@ export default {
       } else {
         return 'mdi-web'
       }
+    },
+    getEventDateTime: function(event) {
+      // let year = event.start_datetime.getFullYear()
+      // let month = event.start_datetime.getMonth() + 1
+      // let day = event.start_datetime.getDate()
+      let r = event.start_datetime.toLocaleDateString() + ' ' + event.start_datetime.toLocaleTimeString()
+      if (event.end_datetime) {
+        if (event.end_datetime.getFullYear() == event.start_datetime.getFullYear()
+            && event.end_datetime.getMonth() == event.start_datetime.getMonth()
+            && event.end_datetime.getDate() == event.start_datetime.getDate()) {
+          r += ' - ' + event.end_datetime.toLocaleTimeString()
+        } else {
+          r += ' - ' + event.end_datetime.toLocaleDateString() + ' ' + event.end_datetime.toLocaleTimeString()
+        }
+      }
+      return r
     }
   },
   computed: {
       filteredEvents: function() {
         let events = this.events.slice()
+        events = events.filter(e => {
+          if (e.end_datetime != null) {
+            return new Date() <= e.end_datetime
+          }
+          return new Date() <= e.start_datetime
+        })
+        
         if (this.selected_event_type != null) {
           events = events.filter(e => {
             return e.type == this.selected_event_type
           })
         }
-        events.sort((a, b) => {
-          return a.title.localeCompare(b.title)
-        })
         return events
       }
   },
@@ -121,6 +140,16 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
-  created: function() {}
+  created: function() {
+    for (let i=0; i<this.events.length; ++i) {
+      this.events[i].start_datetime = new Date(Date.parse(this.events[i].start_datetime))
+      if (this.events[i].end_datetime != null) {
+        this.events[i].end_datetime = new Date(Date.parse(this.events[i].end_datetime))
+      }
+    }
+    this.events.sort((a, b) => {
+      return a.start_datetime - b.start_datetime
+    })
+  }
 };
 </script>
