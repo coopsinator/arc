@@ -11,7 +11,7 @@
               <h2>{{group.name}}</h2>
             </div>
             <div class="link_container">
-            <a :href="group.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
+            <a :href="group.urls[0]" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
