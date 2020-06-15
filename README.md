@@ -1,12 +1,24 @@
-# aapdx
-animal activism pdx https://aapdx.org/
+# arc
+> animal rights collective; a reproducible web application for enabling animal rights activism
+https://arcpdx.org/
+
+## Testing & Deploying
+
+- Clone from GitHub `git clone `
+- Move in the the project directory
+- Install packages `npm install`
+- Run in development with `npm run serve`
+- Deploy with `npm run build` followed by `firebase deploy`
+
+
+- [firebase docs on deploying](https://firebase.google.com/docs/hosting)
 
 ## Features
 
 - display
   - sidenav
   - theme toggle
-  - emojies
+  - emojis
 
 
 ## Todo

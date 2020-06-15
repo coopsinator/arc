@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="main_text">
-      <span>Welcome to AAPDX</span>
+      <span>Welcome to ARCPDX</span>
       <img alt="Vue logo" src="../assets/logo.png" height="20px"/>
     </div>
     <div>Info on Animal Rights Activism in Portland, Oregon</div>

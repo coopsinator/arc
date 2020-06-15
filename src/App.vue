@@ -127,14 +127,14 @@
         
         <v-toolbar-title>
           <span @click="randomTitleSymbol">{{ title_symbol }}</span>
-          <span>&nbsp;Animal Activism PDX&nbsp;</span>
+          <span>&nbsp;Animal Rights Collective Portland&nbsp;</span>
           <span @click="randomTitleSymbol">{{ title_symbol }}</span>
         </v-toolbar-title>
       </div>
       <div class="title_small">
         <v-toolbar-title>
           <span @click="randomTitleSymbol">{{ title_symbol }}</span>
-          <span>&nbsp;AAPDX&nbsp;</span>
+          <span>&nbsp;ARCPDX&nbsp;</span>
           <span @click="randomTitleSymbol">{{ title_symbol }}</span>
         </v-toolbar-title>
       </div>
@@ -146,7 +146,12 @@
     </v-app-bar>
 
     <v-content>
+      <transition
+        name="fade"
+        mode="out-in"
+      >
       <router-view/>
+      </transition>
     </v-content>
 
 
@@ -176,6 +181,17 @@
   a {
     text-decoration: none;
     /* color: lightgoldenrodyellow !important; */
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition-duration: 0.1s;
+    transition-property: opacity;
+    transition-timing-function: ease;
+  }
+
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0
   }
 </style>
 <script>
