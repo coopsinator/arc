@@ -12,13 +12,15 @@ export default new Vuetify({
           primary: colors.green.base, // #E53935
           secondary: colors.red.lighten4, // #FFCDD2
           accent: colors.indigo.base, // #3F51B5,
-          navbar: colors.green.base
+          navbar: colors.green.base,
+          info: '#ffffff'
         },
         dark: {
           // primary: 'lightgoldenrodyellow', // #E53935
           secondary: colors.red.lighten4, // #FFCDD2
           accent: colors.indigo.base, // #3F51B5
-          navbar: colors.blueGrey.darken4
+          navbar: colors.blueGrey.darken4,
+          info: colors.grey.darken4
         }
         // {
         //   primary: '#1976D2',

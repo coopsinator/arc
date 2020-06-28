@@ -32,7 +32,6 @@ const routes = [
   {
     path: '/communities',
     name: 'Communities',
-    // alias: '/orgs',
     component: () => import('../views/Groups.vue'),
     props: {
       'group_type': {
@@ -44,7 +43,6 @@ const routes = [
   {
     path: '/sanctuaries',
     name: 'Sanctuaries',
-    // alias: '/orgs',
     component: () => import('../views/Groups.vue'),
     props: {
       'group_type':  {
@@ -72,6 +70,11 @@ const routes = [
     path: '/calculator',
     name: 'Calculator',
     component: () => import('../views/Calculator.vue')
+  },
+  {
+    path: '/vemoji',
+    name: 'Vemoji',
+    component: () => import('../views/Vemoji.vue')
   }
 ]
 
