@@ -72,8 +72,8 @@ const routes = [
     component: () => import('../views/Calculator.vue')
   },
   {
-    path: '/vemoji',
-    name: 'Vemoji',
+    path: '/emojis',
+    name: 'Emojis',
     component: () => import('../views/Vemoji.vue')
   }
 ]

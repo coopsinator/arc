@@ -1,8 +1,8 @@
 <template>
   <v-container class="center">
     <div id="maindiv">
-      <h1>Vemoji</h1>
-      <div class="row">
+      <h1>Emojis</h1>
+      <!-- <div class="row">
         <div class="input-field inline col s6">
           <v-select :items="tags" label="Tag"></v-select>
         </div>
@@ -12,7 +12,7 @@
         <div class="input-field inline col s4">
           <v-btn class="primary" v-on:click="generateEmojis()">Generate</v-btn>
         </div>
-      </div>
+      </div> -->
       <div id="rightdiv" class="info">
         <div id="textareacontainer">
           <v-textarea name="input-7-1" v-model="output" class="output"></v-textarea>
@@ -590,10 +590,11 @@ export default {
       this.resizeTextArea();
     },
     copyOutput() {
-      let emoji_output = document.querySelector("#emoji_output");
+
+      let emoji_output = document.querySelector("textarea");
       emoji_output.select();
       document.execCommand("copy");
-      this.clearSelection();
+      // this.clearSelection();
       //M.toast({html: 'copied to clipboard', displayLength: 750})
     },
     clearSelection() {
