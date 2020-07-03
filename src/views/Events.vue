@@ -11,10 +11,12 @@
               <h2>{{event.title}}</h2>
               <h4 class="event_subtitle">{{event.hosts}}</h4>
               <h4 class="event_subtitle">{{getEventDateTime(event)}}</h4>
+              <!-- <div>{{event.url}}</div> -->
             </div>
             <div class="link_container">
-            <a :href="event.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
+              <a :href="event.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
             </div>
+            
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <div v-html="event.description"></div>

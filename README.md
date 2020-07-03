@@ -23,6 +23,7 @@ https://arcpdx.org/
 
 ## Todo
 
+- properly format the event datetimes using [moment.js](https://www.npmjs.com/package/vue-moment)
 - page for online activism
 - newsletter on MailChimp
 - data
