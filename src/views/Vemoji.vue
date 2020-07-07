@@ -513,11 +513,14 @@ export default {
         tags: ["activism"]
       },
       { name: "Black Heart", symbol: "🖤", tags: ["activism"] },
+      { name: "White Heart", symbol: "🤍", tags: ["activism"]},
       { name: "Green Heart", symbol: "💚", tags: ["activism"] },
+      { name: "Blue Heart", symbol: "💙", tags: ["activism"]},
+      { name: "Orange Heart", symbol: "🧡", tags: ["activism"]},
       { name: "Red Heart", symbol: "❤️", tags: ["activism"] },
       { name: "Broken Heart", symbol: "💔", tags: ["activism"] },
       { name: "Loudspeaker", symbol: "📢", tags: ["activism"] },
-      // { name: 'Bullhorn with Sound Waves', symbol: '🕬', tags: ['activism'] },
+      { name: 'Bullhorn with Sound Waves', symbol: '🕬', tags: ['activism'] },
       { name: "Rainbow", symbol: "🌈", tags: ["activism", "nature"] },
       { name: "Peace Symbol", symbol: "☮️", tags: ["activism"] }
     ],

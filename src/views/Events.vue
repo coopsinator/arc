@@ -114,6 +114,10 @@ export default {
           r += ' - ' + event.end_datetime.toLocaleDateString() + ' ' + event.end_datetime.toLocaleTimeString()
         }
       }
+      
+      r = r.split(':00 ').join(' ')
+      
+      
       return r
     }
   },
