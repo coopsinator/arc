@@ -11,7 +11,7 @@
               <h2>{{group.name}}</h2>
             </div>
             <div class="link_container">
-            <a :href="group.urls[0]" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
+            <a :href="group.url" target="_blank">&nbsp;<v-icon @click.native.stop color="primary">mdi-link-variant</v-icon></a>
             </div>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
@@ -22,6 +22,12 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+    </v-row>
+    <v-row class="text-center">
+      <v-pagination
+        v-model="page"
+        :length="pages"
+      ></v-pagination>
     </v-row>
   </v-container>
 </template>
@@ -74,14 +80,16 @@
 
 </style>
 <script>
-import json from "../data/groups.json";
+import arcdb from '../arcdb'
 export default {
   name: "Groups",
   props: ['group_type'],
   data: () => ({
     group_types: ['organizations', 'communities', 'sanctuaries', 'restaurants', 'businesses'],
     // group_type: this.group_type,
-    groups: json.groups
+    groups: [],
+    page: 1,
+    pages: 1
   }),
   methods: {
     findIconForUrl: function(url) {
@@ -98,20 +106,43 @@ export default {
       } else {
         return 'mdi-web'
       }
+    },
+    getGroups: function() {
+      window.scrollTo(0,0)
+      arcdb({
+        url: 'groups',
+        params: {
+          type: this.group_type.singular,
+          page: this.page,
+          per_page: 20
+        }
+      }).then(response => {
+        this.pages = response.data.pages
+        this.groups = response.data.groups
+      })
     }
   },
   computed: {
     filteredGroups: function() {
       let groups = this.groups.slice()
-      if (this.group_type != null) {
-        groups = groups.filter(e => {
-          return e.type == this.group_type.singular
-        })
-      }
-      groups.sort((a, b) => {
-        return a.name.localeCompare(b.name)
-      })
+      // if (this.group_type != null) {
+      //   groups = groups.filter(e => {
+      //     return e.status == 'approved' && e.type == this.group_type.singular
+      //   })
+      // }
+      // groups.sort((a, b) => {
+      //   return a.name.localeCompare(b.name)
+      // })
       return groups
+    }
+  },
+  watch: {
+    group_type: function() {
+      this.page = 1
+      this.getGroups()
+    },
+    page: function() {
+      this.getGroups()
     }
   },
   filters: {
@@ -121,8 +152,8 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
-  created: function() {
-    // console.log(this.group_type)
+  mounted: function() {
+    this.getGroups()
   }
 };
 </script>

@@ -8,9 +8,9 @@
         <v-expansion-panel v-for="(event,i) in filteredEvents" :key="i">
           <v-expansion-panel-header>
             <div>
-              <h2>{{event.title}}</h2>
+              <h2>{{event.name}}</h2>
               <h4 class="event_subtitle">{{event.hosts}}</h4>
-              <h4 class="event_subtitle">{{getEventDateTime(event)}}</h4>
+              <h4 class="event_subtitle">{{event.display_datetime}}</h4>
               <!-- <div>{{event.url}}</div> -->
             </div>
             <div class="link_container">
@@ -24,6 +24,12 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+    </v-row>
+    <v-row class="text-center">
+        <v-pagination
+          v-model="page"
+          :length="pages"
+        ></v-pagination>
     </v-row>
   </v-container>
 </template>
@@ -76,13 +82,15 @@
 
 </style>
 <script>
-import json from "../data/events.json";
+import arcdb from '../arcdb'
 export default {
   name: "Events",
   data: () => ({
     event_types: [],
     selected_event_type: null,
-    events: json.events
+    events: [],
+    page: 1,
+    pages: 1
   }),
   methods: {
     findIconForUrl: function(url) {
@@ -119,6 +127,29 @@ export default {
       
       
       return r
+    },
+    getEvents: function() {
+      window.scrollTo(0,0)
+      arcdb({
+        url: 'events',
+        params: {
+          page: this.page,
+          per_page: 20
+        }
+      }).then(response => {
+        this.pages = response.data.pages
+        this.events = response.data.events
+        for (let i=0; i<this.events.length; ++i) {
+          this.events[i].start_datetime = new Date(Date.parse(this.events[i].start_datetime))
+          if (this.events[i].end_datetime != null) {
+            this.events[i].end_datetime = new Date(Date.parse(this.events[i].end_datetime))
+          }
+        }
+        // this.events.sort((a, b) => {
+        //   return a.start_datetime - b.start_datetime
+        // })
+        
+      })
     }
   },
   computed: {
@@ -146,16 +177,13 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
-  created: function() {
-    for (let i=0; i<this.events.length; ++i) {
-      this.events[i].start_datetime = new Date(Date.parse(this.events[i].start_datetime))
-      if (this.events[i].end_datetime != null) {
-        this.events[i].end_datetime = new Date(Date.parse(this.events[i].end_datetime))
-      }
+  watch: {
+    page: function() {
+      this.getEvents()
     }
-    this.events.sort((a, b) => {
-      return a.start_datetime - b.start_datetime
-    })
+  },
+  mounted: function() {
+    this.getEvents()
   }
 };
 </script>

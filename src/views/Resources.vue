@@ -24,7 +24,8 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-expansion-panels>
+      <v-fade-transition>
+      <v-expansion-panels v-show="show_panels">
         <v-expansion-panel v-for="(resource,i) in filteredResources" :key="i">
           <v-expansion-panel-header>
             <div>
@@ -44,6 +45,13 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+      </v-fade-transition>
+    </v-row>
+    <v-row class="text-center" v-if="pages > 1">
+      <v-pagination
+        v-model="page"
+        :length="pages"
+      ></v-pagination>
     </v-row>
   </v-container>
 </template>
@@ -93,16 +101,18 @@
   align-items:center;
   padding-right:10px;
 }
-
 </style>
 <script>
-import json from "../data/resources.json";
+import arcdb from '../arcdb'
 export default {
   name: "Resources",
   data: () => ({
-    resource_types: ['app', 'article', 'book', 'documentary', 'film', 'video', 'website'], // 'business', 'restaurant'],
+    resource_types: ['app', 'article', 'book', 'documentary', 'film', 'video', 'website'],
     selected_resource_type: null,
-    resources: json.resources
+    resources: [],
+    page: 1,
+    pages: 1,
+    show_panels: true
   }),
   methods: {
     findIconForUrl: function(url) {
@@ -119,29 +129,58 @@ export default {
       } else {
         return 'mdi-web'
       }
+    },
+    getResources: function() {
+      this.show_panels = false
+      arcdb({
+        url: 'resources',
+        params: {
+          type: this.selected_resource_type,
+          page: this.page,
+          per_page: 20
+        }
+      }).then(response => {
+        this.pages = response.data.pages
+        this.resources = response.data.resources
+        window.scrollTo(0,0)
+        // setTimeout(() => {
+          this.show_panels = true
+        // }, 500)
+      })
     }
   },
   computed: {
       filteredResources: function() {
         let resources = this.resources.slice()
-        if (this.selected_resource_type != null) {
-          resources = resources.filter(e => {
-            return e.type == this.selected_resource_type
-          })
-        }
-        resources.sort((a, b) => {
-          return a.name.localeCompare(b.name)
-        })
+        // if (this.selected_resource_type != null) {
+        //   resources = resources.filter(e => {
+        //     return e.type == this.selected_resource_type
+        //   })
+        // }
+        // resources.sort((a, b) => {
+        //   return a.name.localeCompare(b.name)
+        // })
         return resources
       }
   },
-  filters: {
-        capitalize: function (value) {
-            if (!value) return ''
-            value = value.toString()
-            return value.charAt(0).toUpperCase() + value.slice(1)
-        }
+  watch: {
+    page: function() {
+      this.getResources()
     },
-  created: function() {}
+    selected_resource_type: function() {
+      this.page = 1
+      this.getResources()
+    }
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  },
+  mounted: function() {
+    this.getResources()
+  }
 };
 </script>
