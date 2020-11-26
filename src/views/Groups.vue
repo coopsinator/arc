@@ -74,14 +74,11 @@
 
 </style>
 <script>
-import json from "../data/groups.json";
 export default {
   name: "Groups",
   props: ['group_type'],
   data: () => ({
     group_types: ['organizations', 'communities', 'sanctuaries', 'restaurants', 'businesses'],
-    // group_type: this.group_type,
-    groups: json.groups
   }),
   methods: {
     findIconForUrl: function(url) {
@@ -98,11 +95,18 @@ export default {
       } else {
         return 'mdi-web'
       }
+    },
+    getGroups() {
+      this.$store.dispatch('getGroups');
     }
   },
   computed: {
     filteredGroups: function() {
-      let groups = this.groups.slice()
+      let groups = this.$store.state.groups
+      groups = groups.slice()
+      groups = groups.filter(e => {
+        return e.submission_status == 'approved'
+      })
       if (this.group_type != null) {
         groups = groups.filter(e => {
           return e.type == this.group_type.singular
@@ -121,8 +125,8 @@ export default {
       return value.charAt(0).toUpperCase() + value.slice(1)
     }
   },
-  created: function() {
-    // console.log(this.group_type)
+  mounted: function() {
+    this.getGroups()
   }
 };
 </script>

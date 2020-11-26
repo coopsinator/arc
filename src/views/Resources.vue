@@ -96,13 +96,11 @@
 
 </style>
 <script>
-import json from "../data/resources.json";
 export default {
   name: "Resources",
   data: () => ({
     resource_types: ['app', 'article', 'book', 'documentary', 'film', 'video', 'website'], // 'business', 'restaurant'],
     selected_resource_type: null,
-    resources: json.resources
   }),
   methods: {
     findIconForUrl: function(url) {
@@ -119,11 +117,18 @@ export default {
       } else {
         return 'mdi-web'
       }
+    },
+    getResources() {
+      this.$store.dispatch('getResources');
     }
   },
   computed: {
       filteredResources: function() {
-        let resources = this.resources.slice()
+        let resources = this.$store.state.resources
+        resources = resources.slice()
+        resources = resources.filter(e => {
+          return e.submission_status == 'approved'
+        })
         if (this.selected_resource_type != null) {
           resources = resources.filter(e => {
             return e.type == this.selected_resource_type
@@ -136,12 +141,14 @@ export default {
       }
   },
   filters: {
-        capitalize: function (value) {
-            if (!value) return ''
-            value = value.toString()
-            return value.charAt(0).toUpperCase() + value.slice(1)
-        }
-    },
-  created: function() {}
+    capitalize: function (value) {
+        if (!value) return ''
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1)
+    }
+  },
+  mounted: function() {
+    this.getResources()
+  }
 };
 </script>

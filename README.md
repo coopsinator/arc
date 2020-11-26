@@ -15,23 +15,41 @@ https://arcpdx.org/
 
 ## Features
 
-- display
-  - sidenav
-  - theme toggle
-  - emojis
+
+- events
+- groups
+  - organizations
+  - communities
+  - sanctuaries
+- resources
 
 
 ## Todo
 
-- properly format the event datetimes using [moment.js](https://www.npmjs.com/package/vue-moment)
-- page for online activism
+- homepage
+  - photos
+  - latest voices for the animals
+  - organization/resource/response of the day
+- calculator
+  - resources saved - add sliders, sources
+  - deaths
+    - icon for each species
+    - counter - add reset button, sources, images for each species
+    - [data table](https://vuetifyjs.com/en/components/data-tables/) from [jfa data](https://justiceforanimals.org/Table:_Annual_Slaughter_Counts_of_Land_Animals_by_Country,_Animal,_and_Usage) with [frozen row/coumn](https://codepen.io/lzhoucs/pen/dqZvXr?editors=0010) - view by country, industry, timescale (per second, per minute, per hour, per day, per month, per day)
+    - [map](https://plotly.com/javascript/choropleth-maps/)
+- events
+  - properly format the event datetimes using [moment.js](https://www.npmjs.com/package/vue-moment)
+  - [calendar](https://vuetifyjs.com/en/components/calendars/) view
+- share button on every item and every page
+  - share to facebook, twitter, instagram
+  - copy text
+  - copy link
+- organizations - filter by local / national / online
+- online actions
+  - check off one at a time, save with user, counter for completed items
 - newsletter on MailChimp
 - data
-  - share button on every item and every page
-  - events
   - groups
-    - organizations
-    - communities
     - restaurants
     - businesses
   - articles
@@ -67,3 +85,7 @@ https://arcpdx.org/
   - calendar (weather, holidays, events)
 
 
+## Data Sources
+
+- [holidays](http://www.holidays-and-observances.com/animal-holidays.html)
+- 

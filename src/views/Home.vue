@@ -4,7 +4,7 @@
       <span>Welcome to ARCPDX</span>
       <img alt="Vue logo" src="../assets/logo.png" height="20px"/>
     </div>
-    <div>Info on Animal Rights Activism in Portland, Oregon</div>
+    <div class="main-subtitle">Animal Rights Collective Portland (ARCPDX) is a community of individuals and groups amplifying and supporting animal rights activism in the Portland Metro area.</div>
     <div><v-btn class="primary" x-large link to="/events">Events</v-btn></div>
     <div><v-btn class="primary" x-large link to="/organizations">Organizations</v-btn></div>
     <div><v-btn class="primary" x-large link to="/communities">Communities</v-btn></div>
@@ -28,6 +28,10 @@
   }
   .main_text span {
     margin-right:20px;
+  }
+  .main-subtitle {
+    max-width:340px;
+    margin:20px auto !important;
   }
 </style>
 <script>
